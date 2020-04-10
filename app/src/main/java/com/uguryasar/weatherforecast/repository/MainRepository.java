@@ -1,8 +1,7 @@
 package com.uguryasar.weatherforecast.repository;
 
-import rx.Subscription;
+interface MainRepository {
+    void GetWeatherByLocation(Double lat, Double lon);
 
-public interface MainRepository {
-   void GetWeatherByLocation(Double lat, Double lon);
-   void GetICityList();
+    void GetICityList();
 }

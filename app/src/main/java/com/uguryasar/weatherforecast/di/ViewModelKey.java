@@ -7,12 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 
 import dagger.MapKey;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 @MapKey
 @Documented
 @java.lang.annotation.Target({ElementType.METHOD})
-
-public @interface ViewModelKey {
-   Class value();
+@interface ViewModelKey {
+    Class value();
 }

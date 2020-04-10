@@ -33,6 +33,7 @@ import com.uguryasar.weatherforecast.model.CityList;
 import com.uguryasar.weatherforecast.model.WeatherResponse;
 import com.uguryasar.weatherforecast.network.rest.NetworkRequest;
 import com.uguryasar.weatherforecast.network.rest.WeatherRestApiInterface;
+import com.uguryasar.weatherforecast.util.MathHelper;
 import com.uguryasar.weatherforecast.viewmodel.MainViewModel;
 
 import static br.com.zbra.androidlinq.Linq.*;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     private List<CityList> mCityList;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private Spinner spinner;
 
     @Override
@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements Injectable {
 
         recyclerView = findViewById(R.id.recycler_main);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         spinner = findViewById(R.id.spn_main_cityList);
 
@@ -88,13 +87,11 @@ public class MainActivity extends AppCompatActivity implements Injectable {
             getLocation();
         }
 
-        mainViewModel.weatherByLocationData().observe(this, (Observer) data -> {
+        mainViewModel.weatherByLocationData().observe(this, data -> {
             doWeatherByLocationWorks((WeatherResponse) data);
         });
 
-        mainViewModel.cityList().observe(this, (Observer) data -> {
-            doCityListWorks((List<CityList>) data);
-        });
+        mainViewModel.cityList().observe(this, this::doCityListWorks);
 
         mainViewModel.GetCityList();
 
@@ -103,13 +100,14 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     private void doWeatherByLocationWorks(WeatherResponse data) {
         mTv_locationName.setText(data.getName());
         //Convert Kelvin to Celcius
-        mTv_temp.setText(getCelsiusValue(data.getMain().getTemp()));
+        mTv_temp.setText(MathHelper.getCelsiusStr(data.getMain().getTemp()));
         mTv_coords.setText(data.getCoord().getLat().toString() + " / " + data.getCoord().getLon().toString());
     }
 
     private void doCityListWorks(List<CityList> data) {
         mCityList = data;
-        List<String> cities = stream(data).select(a -> a.getIl()).toList();
+        List<String> cities = stream(data).select(CityList::getIl).toList();
+        cities.add(0, "Please select a city");
         setRecycleAdapter();
 
         spinner.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, cities));
@@ -118,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements Injectable {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Get the value selected by the user
                 // e.g. to store it as a field or immediately call a method
-
-                getWeatherValues(mCityList.get(position).getIl(), position, true);
+                if (position != 0)
+                    getWeatherValues(mCityList.get(position - 1).getIl(), position, true);
             }
 
             @Override
@@ -135,13 +133,13 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     }
 
     private void getWeatherValues(String _city, int _pos, boolean _fromSpinner) {
-        NetworkRequest.performAsyncRequest(weatherRestApiInterface.GetWeatherByCityName(_city + ",tr", Constants.API_KEY),
+        NetworkRequest.performAsyncRequest(weatherRestApiInterface.GetWeatherByCityName(_city + ",tr", Constants.WEATHER_API_KEY),
                 (response) -> {
                     if (_fromSpinner) {
                         doWeatherByLocationWorks(response);
 
                     } else {
-                        mCityList.get(_pos).setTemp(getCelsiusValue(response.getMain().getTemp()));
+                        mCityList.get(_pos).setTemp(MathHelper.getCelsiusStr(response.getMain().getTemp()));
                         mAdapter.notifyDataSetChanged();
                     }
 
@@ -175,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     }
 
     private void getLocation() {
-        // mainViewModel.GetWeatherByCityName("london,uk");
         LocationRequest request = new LocationRequest();
 
         request.setInterval(60000);
@@ -193,11 +190,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
                 }
             }
         }, null);
-
-    }
-
-    private String getCelsiusValue(Double _kelvinValue) {
-        return (int) (_kelvinValue - 273.15) + "°";
 
     }
 }

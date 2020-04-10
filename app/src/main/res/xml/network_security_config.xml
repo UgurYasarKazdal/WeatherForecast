@@ -3,6 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">api.openweathermap.org</domain>
         <domain includeSubdomains="true">gist.githubusercontent.com</domain>
-
     </domain-config>
 </network-security-config>

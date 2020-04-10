@@ -10,10 +10,9 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-
 public final class RepositoryModule {
-   @Provides
-   public final MainRepositoryImpl providedMainRepo(@Named("WeatherApi") WeatherRestApiInterface weatherRestApiInterface, @Named("CityListApi") CityListRestApiInterface cityListRestApiInterface) {
-      return new MainRepositoryImpl(weatherRestApiInterface,cityListRestApiInterface);
-   }
+    @Provides
+    public final MainRepositoryImpl providedMainRepo(@Named("WeatherApi") WeatherRestApiInterface weatherRest, @Named("CityListApi") CityListRestApiInterface cityRest) {
+        return new MainRepositoryImpl(weatherRest, cityRest);
+    }
 }

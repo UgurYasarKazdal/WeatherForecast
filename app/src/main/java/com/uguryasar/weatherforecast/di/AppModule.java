@@ -10,25 +10,21 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-
-@Module(
-   includes = {ViewModelModule.class}
-)
-
+@Module(includes = {ViewModelModule.class})
 public final class AppModule {
-   @Provides
-   @Singleton
-   public final WeatherForecastApp providedApp() {
-      return WeatherForecastApp.app;
-   }
+    @Provides
+    @Singleton
+    public final WeatherForecastApp providedApp() {
+        return WeatherForecastApp.app;
+    }
 
-   @Provides
-   public final Context providedContext( WeatherForecastApp app) {
-      return app.getApplicationContext();
-   }
+    @Provides
+    public final Context providedContext(WeatherForecastApp app) {
+        return app.getApplicationContext();
+    }
 
-   @Provides
-   public final Activity providedActivity$app_debug( WeatherForecastApp app) {
-      return app.activity;
-   }
+    @Provides
+    public final Activity providedActivity$app_debug(WeatherForecastApp app) {
+        return app.activity;
+    }
 }

@@ -16,8 +16,8 @@ import java.util.List;
 import javax.inject.Named;
 
 public class MainRepositoryImpl implements MainRepository {
-    WeatherRestApiInterface weatherRestApiInterface;
-    CityListRestApiInterface cityListRestApiInterface;
+    private WeatherRestApiInterface mWeatherRestApiInterface;
+    private CityListRestApiInterface mWityListRestApiInterface;
     private final MutableLiveData _weatherByLocationData = new MutableLiveData();
     private final MutableLiveData<List<CityList>> _cityList = new MutableLiveData();
 
@@ -29,14 +29,14 @@ public class MainRepositoryImpl implements MainRepository {
         return this._cityList;
     }
 
-    public MainRepositoryImpl(@Named("WeatherApi") WeatherRestApiInterface weatherRestApiInterface, @Named("CityListApi") CityListRestApiInterface cityListRestApiInterface) {
-        this.weatherRestApiInterface = weatherRestApiInterface;
-        this.cityListRestApiInterface = cityListRestApiInterface;
+    public MainRepositoryImpl(@Named("WeatherApi") WeatherRestApiInterface _weatherRestApiInterface, @Named("CityListApi") CityListRestApiInterface _cityListRestApiInterface) {
+        this.mWeatherRestApiInterface = _weatherRestApiInterface;
+        this.mWityListRestApiInterface = _cityListRestApiInterface;
     }
 
     @Override
     public void GetWeatherByLocation(Double lat, Double lon) {
-        NetworkRequest.performAsyncRequest(weatherRestApiInterface.GetWeatherByLocation(lat, lon, Constants.API_KEY),
+        NetworkRequest.performAsyncRequest(mWeatherRestApiInterface.GetWeatherByLocation(lat, lon, Constants.WEATHER_API_KEY),
                 (data) -> {
                     _weatherByLocationData.postValue(data);
                 }, (error) -> {
@@ -48,7 +48,7 @@ public class MainRepositoryImpl implements MainRepository {
 
     @Override
     public void GetICityList() {
-        NetworkRequest.performAsyncRequest(cityListRestApiInterface.GetCities(),
+        NetworkRequest.performAsyncRequest(mWityListRestApiInterface.GetCities(),
                 (data) -> {
                     _cityList.postValue(data);
                 }, (error) -> {

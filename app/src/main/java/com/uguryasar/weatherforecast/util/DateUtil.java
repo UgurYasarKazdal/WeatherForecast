@@ -7,7 +7,6 @@ import java.util.Locale;
 
 public class DateUtil {
 
-
     public static Date stringToDateObject3(String _date) {
         if (_date == null) {
             return null;

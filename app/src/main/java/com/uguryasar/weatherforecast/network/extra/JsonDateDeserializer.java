@@ -15,16 +15,16 @@ import java.util.Date;
 
 public class JsonDateDeserializer implements JsonDeserializer<Date> {
 
-  public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-      throws JsonParseException {
-    String s = json.getAsJsonPrimitive().getAsString();
+    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        String s = json.getAsJsonPrimitive().getAsString();
 //    long l = Long.parseLong(s.substring(6, s.length() - 2));
-    if (TextUtils.isEmpty(s)) {
-      return null;
+        if (TextUtils.isEmpty(s)) {
+            return null;
+        }
+        if (s.equals("")) {
+            return null;
+        }
+        return DateUtil.stringToDateObject3(s);
     }
-    if (s.equals("")) {
-      return null;
-    }
-    return DateUtil.stringToDateObject3(s);
-  }
 }

@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class CityList {
 
-@SerializedName("il")
-@Expose
-private String il;
-@SerializedName("plaka")
-@Expose
-private Integer plaka;
+    @SerializedName("il")
+    @Expose
+    private String il;
+    @SerializedName("plaka")
+    @Expose
+    private Integer plaka;
 
     public String getTemp() {
         return temp;
@@ -22,20 +22,20 @@ private Integer plaka;
 
     private String temp;
 
-public String getIl() {
-return il;
-}
+    public String getIl() {
+        return il;
+    }
 
-public void setIl(String il) {
-this.il = il;
-}
+    public void setIl(String il) {
+        this.il = il;
+    }
 
-public Integer getPlaka() {
-return plaka;
-}
+    public Integer getPlaka() {
+        return plaka;
+    }
 
-public void setPlaka(Integer plaka) {
-this.plaka = plaka;
-}
+    public void setPlaka(Integer plaka) {
+        this.plaka = plaka;
+    }
 
 }

@@ -11,12 +11,12 @@ import rx.Observable;
 
 public interface WeatherRestApiInterface {
 
-        @NonNull
-        @GET("weather")
-        Observable<WeatherResponse> GetWeatherByLocation(@Query("lat") Double lat, @Query("lon") Double lon, @Query("appid") String apiKey);
+    @NonNull
+    @GET("weather")
+    Observable<WeatherResponse> GetWeatherByLocation(@Query("lat") Double lat, @Query("lon") Double lon, @Query("appid") String apiKey);
 
-        @NonNull
-        @GET("weather")
-        Observable<WeatherResponse> GetWeatherByCityName(@Query("q") String cityName, @Query("appid") String apiKey);
+    @NonNull
+    @GET("weather")
+    Observable<WeatherResponse> GetWeatherByCityName(@Query("q") String cityName, @Query("appid") String apiKey);
 
-    }
+}

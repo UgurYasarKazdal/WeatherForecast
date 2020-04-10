@@ -17,9 +17,7 @@ import javax.inject.Inject;
 
 public final class MainViewModel extends ViewModel {
     private final MutableLiveData _weatherByLocationData = new MutableLiveData();
-    ;;
     private final MutableLiveData<List<CityList>> _cityList = new MutableLiveData<>();
-    ;
 
     private final MainRepositoryImpl repo;
 

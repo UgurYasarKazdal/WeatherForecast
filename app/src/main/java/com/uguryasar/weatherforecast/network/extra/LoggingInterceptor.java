@@ -23,13 +23,9 @@ import okio.BufferedSink;
 
 public class LoggingInterceptor implements Interceptor {
 
-    public static List<String> RequestedUrlList = new ArrayList<>();
-
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
-
-        RequestedUrlList.add(request.url().toString());
 
         long t1 = System.nanoTime();
         String requestLog = String.format("Sending request %s on %s%n%s",
@@ -51,10 +47,7 @@ public class LoggingInterceptor implements Interceptor {
         Response response = null;
         try {
             response = chain.proceed(original);
-        } catch (SocketTimeoutException socketEx) {
-        } catch (UnknownHostException unknownHost) {
-            Log.e(">>>>>> 98 KİŞİ <<<<<<", "BAĞLANTI YOK BABO");
-
+        } catch (SocketTimeoutException | UnknownHostException socketEx) {
         }
         long t2 = System.nanoTime();
 
@@ -63,8 +56,8 @@ public class LoggingInterceptor implements Interceptor {
 
         String bodyString = response.body().string();
 
-            //   Log.d("TAG", "response" + "\n" + responseLog + "\n" + response.body().string());
-            Log.d("TAG", "PRE RESPONSE>>>" + "\n" + responseLog + "\n" + bodyString);
+        //   Log.d("TAG", "response" + "\n" + responseLog + "\n" + response.body().string());
+        Log.d("TAG", "PRE RESPONSE>>>" + "\n" + responseLog + "\n" + bodyString);
 
 
         //TODO:GENERIC RESPONSE BODY DECRYPTION
@@ -77,7 +70,7 @@ public class LoggingInterceptor implements Interceptor {
                 .build();
     }
 
-    public static String bodyToString(@NonNull final Request request) {
+    private static String bodyToString(@NonNull final Request request) {
         try {
             final Request copy = request.newBuilder().removeHeader("Content-Length").build();
             final Buffer buffer = new Buffer();
