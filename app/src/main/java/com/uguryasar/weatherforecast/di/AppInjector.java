@@ -14,7 +14,6 @@ import com.uguryasar.weatherforecast.WeatherForecastApp;
 
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.HasSupportFragmentInjector;
 
 
 public final class AppInjector {
@@ -55,9 +54,6 @@ public final class AppInjector {
             AndroidInjection.inject(activity);
         }
 
-        if (activity instanceof HasSupportFragmentInjector) {
-            AndroidInjection.inject(activity);
-        }
 
         if (activity instanceof FragmentActivity) {
             ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentLifecycleCallbacks() {
